@@ -1,0 +1,857 @@
+﻿INTRODUCTION TO LINUX
+======================
+1.USING THE SYSTEM
+	a.Linux Components
+		a1.Login into the system
+		a2.logout from the system
+			logout 
+			exit(Ctrl + d) 
+			passwd
+		a3.command Syntax
+			[username@hostname pwd]#/$ command option(s) Arfument(s)
+			date & cal
+			clear
+			echo
+			banner
+			who
+			w
+			who am i
+			whoami
+			finger
+		a3.Linux file system
+			CD-Rom
+			Hard Disk
+			Network File system
+	b.Linux Utilities
+		b1.search for specific file
+		b2.search for patterns in files
+		b3.compress files
+		b4.compare files and directories
+	c.working with the shell
+		c1.what is shell
+			command interpreter
+			programmming language
+			Process Control
+			Customizable
+			Wildcards and Variables
+		c2.GUI
+			gnome
+			KDE
+	d.Communicate with other users
+			mail
+			wall
+			write
+			talk
+			mesg
+	e.Getting help of commands
+			whatis
+			whereis
+			man
+			info
+			man -k "string(s)"
+			--help
+	f.Keyboard shortcuts
+		Ctrl + c -- Terminate the process
+		Ctrl + d -- End of the transmition
+		Ctrl + s - to pause process
+		Ctrl + q -- resume the pasued process
+		Ctrl + u -- to erase the command line.
+1.Exercise 1 - Using the System
+	1.What is the correct command syntax in Linux?
+			$ mail newmail -f --> wrong one
+			$ mail f newmail  --> wrong
+			$ -f mail 		  --> wrong
+			$ mail -f newmail --> right 
+	2.What command would you use to send mail items?
+		mail username
+		mail username@remote machine ip/hostname
+	3.What are other commands that can be used to communicate With other users?
+		wall
+		write
+		talk
+	4.What output would you expect from the following command:
+			Cal 8?
+			eith year calender
+	5.Which command would you use to find out when a particular user logged in?
+			finger username
+			finger siva --> it will showyou user loged in or not/last login time.
+			$ who am i
+			$ who
+			$ finger everyone
+			$ finger username -- right one
+			
+2. Files and Directories
+	note: Everything is a file in linux
+	a.file
+		ordinary
+			ASCII/text
+			empty
+			binary
+		Directorie
+			Folders(directory)
+		Special
+			charecter device --> /dev/tty* --> /dev/pts/*
+			Block --> /dev/sd* --> Hard disk
+			Link(soft/symbolic) --> soft link file
+			socket				--> its used to communicate two process
+			piped				--> send right hand command output will be input to left hand side command
+	b.Directory Content
+		inode  -- its uniq number for files in a file system.
+		file names -->
+	c.Inode Table
+		inode filetype perm LINKS UID GID SIZE MODIFIED_TIME ADDRES_LOCATION
+	d.Hierarchial structure
+	e.Pathnames
+		full/obsolute path --> it should start with /(top level directory)
+		relative		   --> it might start with with .,..,
+	f.general commands
+		pwd -- present working directory
+		touch -- create empty files and change the access,modify and change time of a file to current date.
+		cat --> to concatinate the files 
+		ls --> list the directory content
+		cd 
+		mkdir
+		rmdir --> will remove only empty directories
+		stat  --> will show you the statistics of the file/directory
+	g.Time stamps
+		access time --> cat,tail,head ex: cat file
+		modify time --> if add/remove the data from file modify time will change.
+		change time --> if any attribute changes on Inode table 
+	i.Linux file names
+		1. should not start with +/-
+		2.it should not contain any metacharacters(* ! @ # $ % ^ & *)
+		3.maximum charecteers of a file is 255
+		4. if use . before the file name its a hidden file.
+o Exercise 3 - Files and Directories
+	1.How can you determine the inode number of a file?
+		ls -li filename
+	2.Where are the names and inode numbers of files stored?
+		directory
+	3.How can you determine our current directory?
+		pwd
+	4.How can you list all files in a directory, including hidden files?
+		ls -a and ls -A(almost all)
+	5.Your current directory is /usr/dt/bin. What is the easiest way to change 	to your home directory?
+		cd --> take you to your home directory.
+	6.Which filenames are relative?
+		../team03/dir 1 : --> right
+		/tmp/file 1 :
+		/.profile :
+		./.profile :      --> right
+	7.Write down the three different file types that LINUX knows :
+		a) ordinary
+		b) directory
+		c) Special
+
+3.Using Files
+	a1.copying files
+		cp source destinatio
+		cp file1 file2
+		cp file1 /tmp/file2
+		cp file1 file2 file3 --> file3 should be a directory.
+		cp /tmp/file ./file5
+	a2.moving files
+		cut and paste && rename the files
+		mv file1 /tmp/
+		mv file1 /tmp/file2
+		Note: if the source and destination same it will rename the file 
+		
+	a3.listing file contents
+		cat tail head less more
+	a4.displaying files
+	a5.word count
+		wc filename
+		output: lines words charecters
+		wc -l file1 --> list only lines
+		wc -w file1 --> words
+		wc -c file1 --> charecters, it includes spaces and enter
+	a6.Linkig files
+		SOFT LINK
+		=============
+		1.WE CAN CREATE SOFT LINKS ACCROSS THE FILE SYSYTEM
+		if i have two partitions like / and /home
+			ln -s /file1 /home/siva/links
+		2.SOFT LINK ONLY LINK WITH FILE NAMES, SO IF YOU RENAME THE ORIGINAL FILE YOU CANT ACCESS THE LINK FILE
+		3.INODE NUMBERS ARE DIFF FOR BOTH ORGINAL AND LINK FILE
+		4.WE CAN CREATE SOFT LINKS FOR DIRECTORIES(FOLDERS) TOO.
+		5.WE NEED TO SPECIFY FULL OF THE PATH SOURCE WHILE YOU CREATING SOFT LINKS
+		6.LINK FILE SIZE BASED ON SOURCE PATH CHARECTERS EX: LN -S /ROOT/FILE1 /TMP/LINK1 - 11 BYTES
+		7.USING SOFT LINKS WE CANT INCREASE THE LINK COUNT OF FILE/DIRECTORY
+		imp: if you create file by defult it will have link count as 1.
+			 if you create directory by default it will have link count as 2.
+
+		HARD LINK
+		===========
+		1.WITHIN PARTITION ONLY WE CAN CREATE HARD LINKS
+		2. HARD LINKS LINK WITH INODE NUMBER, SO EVEN IF YOU RENAME/DELETE THE ORIGINAL FILE STILL YOU CAN ACCESS THE LINK FILE.
+		3.INODE NUMBERS ARE SAME FOR ORIGINAL AND LINK FILE.
+		4.WE CANT CREATE HARD LINKS FOR DIRECTORIES
+		5.WE DONT NEED TO SPECIFY FULL PATHE WHILE YOU CREATING HARD LINKS
+		6.HARD LINNKS WONT TAKE SIZE.
+		7.USING HARD LINK WE CAN INCREASE THE LINK COUNT OF FILES ONLY BUT NOT ON DIRECTORY.
+			CREATING ONE LEVEL SUB DIRECTORIRES ON DIRECTORY WILL INCREASE THE LINK COUNT
+		
+		Q1. how to increase the link count of directory.
+			by adding sub/child directories to the directory.
+		Q2.what about file.
+			by creating Hard links to that file
+		Q3. why we get link count as 2 on directories?
+				Dir ---> inode number + Parent directory + child directories
+	a7.removing files
+			rm file/directories
+			rm -i --> i -- interactive.
+			rm -rf directory
+	
+o Exercise 3 - Using Files	
+	1.What is the effect of the following commands?
+		$cd /home/team01 -- pwd will change to /home/teamo1
+		$ cp file1 file2 -- it will copy file1 as file2
+	2.What is the effect of the following commands?
+		$cd /home/team01
+		$ mv file1 newfile -- rename the file1 as newfile
+	3.What is the effect of the following commands?
+		$cd /home/team01
+		$ ln newfile myfile --> it will create hard link for newfile as myfile
+	4.List commands that can be used to view the contents of a file.
+		cat less more tail head vi nano gedit
+timestamp
+=========
+1. access time
+		change whenerver we access the file
+2.modified time
+		if you write/remove the content on file
+		size coloum will change
+3.change time
+		if any coloum changes in inode table including size coloum 
+		empty --> add content -- text file - change permi - increase link - chjange the owner & group size
+
+[root@sjnsys class]# stat test2
+  File: `test2'
+  Size: 15              Blocks: 8          IO Block: 4096   regular file
+Device: fd00h/64768d    Inode: 397152      Links: 2
+Access: (0644/-rw-r--r--)  Uid: (    0/    root)   Gid: (    0/    root)
+Access: 2017-08-09 06:40:44.625126794 +0530
+Modify: 2017-08-09 06:38:29.886281409 +0530
+Change: 2017-08-09 06:39:54.667117269 +0530
+
+
+4.File Permissions
+	a1. file protection/Permissions
+	a2.changing permission (symbolic && octal)
+	a3.default file permissions
+	a4.umask
+	
+	linux machine we have access levels and access modes
+access levels - who can access the file/directories
+		owner (u)
+		group (g)
+		others (o)
+      10 users in the system
+	u1 -- u10    | u1 -- u10
+	u1 group we added u2 u3 & u4
+	u1 login to the machine
+        note: whenever you create any user in the system by default it will create a group with name of user and it will become primary group of that user
+	user1 -- user1 group (primary group)
+	                      secondary group 
+	i created one file called sample1
+     
+inode ft permi link user(u1) group(u1) size timestamp filename
+
+u1 - owner
+u2 u3 $u4 are group members
+
+u5 to y10 we consider as others
+access modes - what we can do on the file/directories
+		file						directory
+read (r)	cat,vi,less,more,tail,head,nano,gedit		ls , ls -i
+write (w)	vi gedit nano				can use all the commands to create/remove files & dir
+execute (x)     sh, bash & as a command			cd dir1 (mandatory)
+
+aceess levels:
+		user = owner of the file/directories
+		group = all the members of the group
+		others = except owner and group people
+		
+		10 users in the system
+		u1 and i logedin to the u1 user
+		note : every user has a primary group by default that group and uid will stamp on file which he created
+			id <name of the user>
+		u1 - 500(u1) u1(500) --> u2 u3
+		
+		file1 - uid gid                             
+		rxw -- user
+		rw- -- group
+		r-- -- remaining users
+		
+		drwxrwxr-x 4 u1 u1   4096 Jun 23 17:58 dir1
+        -rwxrwxrwx 2 chef chef 588916 Jun 23 18:02 link1
+        -rwxrwxrwx 2 chef chef 588916 Jun 23 18:02 link2
+        (rw-)(r--)(r--)
+	first bit reserv for read
+	second bit resorve for write
+	third bit reserve for execute
+	--x    r--r--	
+symbolic mode
+===============
+rwx
+r
+w
+x
+
+u 
+g
+o
+
+symbols
+========
+
++ to add
+- to remove
+= to override
+
+octal
+=====
+1=x
+2=w
+3=-wx
+4=r
+5=r-x
+6=rw-
+7=rwx
+
+rwx = 7
+rwxrwxrwx = 777
+
+
+	default permission on linux
+=========================================
+
+	file                         direcoty
+        rw-rw-rw-                    rwxrwxrwx
+	666			     777
+use default permission
+=======================
+umask value
+	root 022
+	normal 002
+	rw-r--r--	chmod -- commands
+	6 4 4	
+
+==============================
+
+		666			777
+		022			022
+             =========              ============
+		644                     755
+             rw-r--r--              rwxr-xr-x
+
+	rw-rw-rw-
+	rwxrwxr-x
+===================
+	rw-rw-r--
+
+
+
+		u - user
+		g - group
+		o - others
+		a - all
+		
+		+ -- add
+		- ~> remove
+		============ symbolic format=================
+                chmod u+x filename
+		chmod u-x filename
+		chmod u=x filename
+		rwxrw-r-- filename
+		chmod u-x filename
+		rw-rw-r-- filename
+		chmod u+x filename
+		rwxrw-r-- filename
+		chmod u=x filename
+		--xrw-r-- filename
+
+		chmod ug+x filename
+		chmod ug-rx filename
+		-w--w-r--   filename
+
+		chmod ugo+rwx filename = chmod a+rwx filename
+
+============================octal ==================
+
+		chmod 777 filename
+		rwxrwxrwx filename
+		chmod 755 filename
+		rwxr-xr-x filename
+
+		chmod 77 filename
+		---rwxrwx filename
+
+		chmod 7   filename
+		------rwx filename
+		
+		rwxr-xr-x  dir1
+		chmod u-x  dir1
+		rw-r-xr-x  dir1
+		chmod 655 dir
+
+
+=====================
+note: root user & owner of the file only can change the permissions
+
+	
+
+
+		
+		chmod a+x file2 to add x perm for all levels on file2
+		chmod a-x file2 to remove perm 
+		chmod a=x file2 to overide existed perm with specified perm after = sign
+		SYMBOLIC FORMTE
+		=====================
+		
+		syntax :
+			
+                 drwxrwxr-x 4 u1 u1   4096 Jun 23 17:58 dir1
+				 drw-r-xr-x 4 u1 u1   4096 Jun 23 17:58 dir1
+				 
+				 chmod g-w dir1
+				 chmod g+w dir1
+				 chmod ug0-x dir1 || chmod a-x dir1
+		
+		
+		    
+		                                 file                               directory
+		r - read                    cat,tail,head.less,more,vi             ls
+		w - write                   vi,nano,gedit                          we can use all the commands to create and remove files/directore
+		x - execute                 sh,bash                                cd 
+		
+		
+		OCTAL MODE
+		===========
+		1 - x                       chmod 777 dir1 --> chmod 7(user)7(group)7(other) dir1
+										775 u-rwx g-rwx 0-r-x
+		2 - w                       chmod 655 dir1  u-rw- g-r-x o-r-x
+									chmod 77 dir1 -- u:null g:rwx 0:rwx
+									chmod 7 dir1  -- u:null g:null o:rwx
+		3 - -wx
+		4 - r
+		5 - r-x
+		6 - rw-
+		7 - rwx
+		
+		
+		who can chage the permission of a file/directory
+		1. root user can change the permission
+		2.owner of the file can chage the file
+		
+		2.how to chnge the owner of the file
+		 chown username filename
+		 chown jboss dir1 --> owner of the file
+		 chown jboss.group dir1 || chown jboss:group dir1 -- owner 
+		 chown .group dir1 || chgrp group dir1/file --> to change the group of a file
+		 
+		 NoTE: only root user can change the ownership and group of a file.
+		 
+		 DEFAULT PERMISSSIONS
+		 ====================
+		 
+		 FILE --> 666 (RW-RW-RW-)
+		 dIRECTORY --> 777 (RWXRWXRWX)
+		 
+		 UMASK --> user mask, its used to customize user default permission 
+		  admin(root) -- 0022
+		  normal user -- 0002
+			666
+			022
+			===
+			644(rw-r--r--)
+	
+	
+
+o Exercise 5 - File Permissions
+	The following question are for a file called reporta which has the following set of permissions : rwxr–xr–x
+		1. What is the mode in octal? 755
+		2. Change mode to rwxr--r-- using the symbolic format. chmod go-x 
+		3. Repeat the above operation using the octal format. chmod 744
+		4. Question four is based on the following listing. Assume that the directory jobs contains the file joblog.
+			$ ls – lr
+				total 8
+				drwxr–xr–x 2 judy finance 512 june 5 11:08 jobs
+				./jobs :
+				total 8
+				- rw–rw–r-- 1 judy finance 100 june 6 12:16 joblog
+		Can Fred, who is a member of the finance group, modify the file joblog?
+		5. Question five is based on the following listing. Assume that the directory jobs contains the directory work, which in turn contains the file joblog.
+			$ ls – lr
+			total 8
+			drwxrwxr–x 3 judy finance 512 june 5 11:08 jobs
+			./jobs :
+			total 8
+			drwxrw-r-x 2 judy finance 512 June 5 11:10 work
+			./jobs/work:
+			total 8
+			-rw-rw-r-- 1 judy finance 100 June 6 12:16 joblog
+		Can Fred, who is a member of the finance group, modify the file Joblog ?
+		6. Question six is based on the following listing. Assume that the directory jobs contains the directory work, which in turn contains the file joblog.
+			$ ls – lr
+			total 8
+			drwxr-xr–x 3 judy finance 512 june 5 11:08 jobs
+			./jobs :
+			total 8
+			drwxrwxrwx 2 judy finance 512 June 5 11:10 work
+			./jobs/work:
+			total 8
+			-rw-rw-r-- 1 judy finance 100 June 6 12:16 joblog
+		Can Fred, who is a member of the finance group, copy the file Joblog to his home directory?
+5.The vi Editor
+
+		vi - all unix based platforms
+		nano - text based editor
+		gedit - gui 
+		EDITORS
+		 ========
+		 cat,tail,head,less,more,vi -- to see the cntent of the file.
+		 
+		 vi/vim, nano, gedit(GUI)
+		 
+		 VI/VIM --> Visual interface modifier
+			command mode 
+			insert mode
+			exec mode
+		 
+			1.command mode (Esc)
+				a.its a default mode when you open the vi
+				b.we can remove the lines/words/charectes from file and we can navigate
+				x - deletion charecter by charecter
+				dw - delete word by word
+				dd - delete entire line
+				d$ - deete a line from cursor position to end of the line
+				d0 - delete a line from cursor position to begining of the line
+				yy - to copy lines
+				p - paste the lines which you copied with yy and any deletion commands
+				Note: if you want delete multiple lines/words/charecters we can use number before the command
+				 ex: 4dw --> delete 4 words
+				 
+	            We can use arrows to navigate the file like left right up and down
+
+
+
+                                                 K
+						 |
+				H   <---- ------> L
+				          
+						 |
+						 |
+						 |
+						 j
+			    gg - to go to first line of a file.
+				G  - go to last line.
+				11gg -- to go to 11th line of a file
+				11G - same like above.
+				
+				u --> Undo
+				/name --> to search pattern in file --> it will search from top to bottom
+				?name --> to search pattern in a file --> it will search from bottom to top.
+				
+			2.Insert mode (i,I,a,A,o,O)
+			
+				i --> at the cursor
+				I --> begining of the line
+				a --> next to the cursor
+				A --> End of the line
+				o --> create new line below the cursor
+				O --> crete new line above the cursoor
+				
+			3.exec/last line mode (:)
+			 
+			   :w --> save but not quit.
+			   :q --> quit without save
+			   :wq --> save and quit
+			   :wq! --> forcefully save and quit
+			   :s/oldword/newword -- it will only change the first occurance of the searched word at the cursor
+			   :s/oldword/newword/g -- it will change the entire line 
+			   :g/oldword/s//newword -- it will change the first occurance of every line.
+			   :g/oldword/s//newword/g -- it will change the entire file.
+			   :se nu  -- set the line numbers
+			   :se nonu -- remove the line numbers
+			   :!command -- to execure commands from vi mode
+					ex: :!ls -- it will list the content of your working directory.
+					
+				Note: if you want get the line numbers default we need to create .vimrc file in users' home directory 
+				cd 
+				vi .vimrc -- open the file
+					set nu
+					se nu
+o Exercise 6 - The vi Editor
+	1. When using the vi editor, what are the three modes of operation?
+			command mode(Esc)
+			insert mode
+			exec mode
+	2. While using vi, how do you get to command mode?
+		Esc character
+	3. Which of the following could you use to enter in text?
+		a -- right one
+		xI
+		dd
+	4. While in command mode, pressing the u key repeatedly will “undo” all previously entered commands. True or False ?
+		true
+	5. vi can be used to globally change the first occurrence of a pattern on every line with a given pattern. True or False ?
+		true
+	
+6.Shell Basics
+	a1. Meta charecters and Wildcard charecters
+		< > | ; ! * ? [ ] $ \ “ ‘ ‘ -- special meanig for shell
+	a2.Wildcard
+		* ? ! [ ] [ - ] -- used search file pattern in the file system
+		* --> zero / more occurance(all)
+		? --> single charecter a-z,A-Z,0-9
+		[]--> single charecter ex:- [abc]
+		[a-j] --> single charecter from the range
+		! --> we used with []
+		[!abc] --> except abc
+		[!a-j] --> except a-j
+	a3.charecter substitution in file names
+		ls -l f??d 
+		ls -l f*[dgi]
+		ls -l f*[!dgi]
+		ls -l f* --> it will also list "f" file
+	a4.standard files
+			STDIN 	--> 0 	<
+			STDOUT  --> 1	>,>>(append)
+			STDERR  --> 2	2>,2>>(error append)
+			Keybord is STDIN
+			Terminal(tty) STDOUT
+			Terminal(tty) STDERR
+			
+			Note: /dev/null is a special file in linux, if you send any data to that file, it will disapear from the sysstem
+	a5.Redirections
+		Input
+		mail siva < letter
+		Output
+		ls * > ls.out
+		Error
+		ls * file11 2> ls.err
+		Combined Redirections
+		ls * file11 2>&1 > ls.out
+		ls * file11 > ls.out 2>&1
+		cat > file1 2> error < ls.out
+	a6.Pipes(|)
+		(A sequence of one or more commands separated by a vertical bar “|” is called
+        a pipe. The standard output of each command becomes the standard input of the next command.)
+	a7.filters
+		A filter is a command that reads from standard in, transforms the input in Some way, and writes to standard out.
+		grep 
+		egrep
+		fgrep
+		wc
+		tail
+		head
+		less
+		more
+		sort
+		diff
+		cmp
+		cmpdir
+		tr
+		find
+		cut
+		sed
+		awk
+	a8.split outputs
+		Tee --> (The tee command reads standard input and sends the data to both standard Output and a file.)
+		ls | tee ls3.out
+		ls | tee ls3.out > ls4.out
+	a9.command grouping
+		;
+		pwd;echo hello;mkdir dir12;touch dir12/file
+	a10.line continution 
+		/
+o Exercise 7 - Shell Basics
+	1. What will the following command match
+		$ ls ???[!a – z ]*[0 – 9 ]t
+	2. For questions 2 – 4, indicate where the standard input, standard output and standard error will go.
+		$ cat file1
+			1. standard input (0) :
+			2. standard output (1) :
+			3. standard error (2) :
+	3. $ mail tim < letter
+		1. standard input (0) :
+		2. standard output (1) :
+		3. standard error (2) :
+	4. $ cat .profile > newprofile 2>1
+		1. standard input (0) :
+		2. standard output (1) :
+		3. standard error(2) :
+	For questions 5,6 and 7 create command lines to display the Content of filea using cat and then perform the following :
+	5. Place the output of the command in fileb and the errorsIn filec.
+	6. Place the output of the command in fileb and associate Any errors with the output in fileb.
+	7. Place the output in fileb and disard any error message.(do not display or store error message).
+7.Using Shell Variables
+	Variables represent data whose value may change
+	a1.environment 
+	a2.system variable
+	a3.user defined variables
+	a4.command substitution
+	a5.Quoting Meta charecters
+		''
+		""
+		\
+		
+o Exercise 7 - Using Shell Variables
+	What are the result of the following commands ? (Assume : the Home directory is /home/john, the current directory is
+	/home/john/doc, and it contains files aa, bb and cc.)
+		$ pwd
+		/home/john/doc
+		
+		1. $ echo “Home directory is $HOME”
+		2. $ echo ‘home directory is $HOME’
+		3. $ echo “current directory is ‘pwd’ “
+		4. $ echo “current directory is $ ( pwd ) “
+		5. $ echo “File in this directory are * “
+		6. $ echo * $HOME
+		7. $ echo \*
+8.Processes
+	a1.what is process
+	a2.parent and child process
+	a3.variables and processes
+	a4.exporting variables
+	a5.what is shell script.
+	a6.invoking shell script
+	a7.exit codes from commands
+ Exersize:
+	1. When would you execute a shell script using the dot (.) notation ? Why ?
+	2. What is the command that is used to carry down the value of a variable into the subshell ?
+	3. What would be the value of x at the end of the following steps ?
+		$ ( … login shell …. )
+		$ sh
+		$ x = 50
+		$ export x
+		$ < ctrl - d >
+		$ ( what is the value of x set to now ? )
+9.Controlling Processes
+	a1.monitoring processes
+	a2.fore ground
+	a3.back ground
+	a4.terminating processes
+	a5.Sigmals
+		01 Hang up – you logged out while the process was still running
+		02 Interrupt – you pressed the interrupt ( break ) key sequence ctrl – c
+		03 Quit – you pressed the quit key sequence ctrl - \
+		09 Kill signal :The most powerful ( and risky ) signal that can be sent: Signal cannot be avoided or ignored !
+		15 Termination signal ( Default ) : Stop a process Signal can be handled by programs.
+	a6.Running long processes
+		nohup --> (The nohup command will prevent a process from being killed if you log off the system
+					Before it completes:)
+	a7.job control in the BASH shell
+		Ctrl + z 
+		fg%jobid
+		bg%jobid
+	a8.Daemons
+		A daemon is a never – ending process, that controls a system resource such as the Printer queue.
+		
+o Exercise 9 - Controlling Processes
+	1. What option would you use with the ps command to show the detailed commands that you are running ?
+	2. True or False ? As an ordinary user you can only kill your own jobs and not those of other users.
+	3. Which is the stronger signal that can be sent to a process to terminate it ?
+	4. It is always sensible to start long jobs in the background with the nohup command. Why is this ?
+	5. What is the name for special never – ending system processes in the UNIX environment ?
+10.Customizing the User Environment
+	a1.login files
+	a2./etc/profile
+	a3.Environment Variables
+		LOGNAME
+		TMOUT
+		MAIL
+		TERM
+		PATH
+		PS1,PS2,PS3,PS4
+		ENV
+	a4.alias command
+		alias
+		history
+	a5.~/.bash_profile && ~/.bashrc
+10.Exercise 10 - Customizing the User Environment
+	1.Which file would you use to customize your user environment ? Why ?
+	2.What do the following variables define on your system ?
+		PS 1 :
+		TERM :
+		PATH :
+11.LINUX Utilities
+	a1.find
+	a2.grep 
+			Valid metacharacters : 
+			. 			Any single character
+			* 			Zero or more occurrence of the preceding character
+			[a A] 		Enumeration : a or A
+			[a – f ] 	Any ONE of the characters in the range of a through f
+			^a 			Any lines that start with a
+			Z$ 			Any lines that end with a z
+	a3.grep options
+			-v 			Print lines that do not match
+			-c 			Print only a count of matching lines
+			-l 			Print only the names of the files with matching lines
+			-n 			Number the matching lines
+			-I 			Ignore the case of letters when making comparison
+			-w 			Do a whole word search
+	a4.fgrep & egrep
+	a5.sort
+	a6.ftp
+	a7.ssh
+	a8.tar
+	a9.xargs
+	a10.which, whereis, whence
+	a11.file
+	a12.diff
+	a13.cmp
+	a14.dircmp
+	a15.compression, uncompression,zcat
+	a16.
+11.Exercise 11 - LINUX Utilities (1)
+	1. Which command(s) would you use to locate all the files in your system that began with the string “smit ” ?
+	2. What is the following command doing ?
+		$ ps - ef | grep - w root | grep - w netscape
+	3. lndicate what the following command is doing :
+		$ ls - 1 / home | egrep ‘ txt $ | team 01 $ ’ | sort - r +7 | tail +4 | head +5
+	4. True or false ? Find’s most important characteristic is its ability to travel up through the file tree hierarchy.
+	5. True or False ? When quoted metacharecters are used with find, the shell will first expand the wildcard then pass control to find.
+	6. Which command is used to determine the type of data in a file ?
+		a ) cmp
+		b ) file
+		c ) dircmp
+	7. True or false ? Diff compares text files only.
+	8. True or false ? The compress command will delete the file it is compressing and replace it with the compressed file also renaming it with a .z extension.
+	9.To display non – printable characters in a file or directory, use :
+		a ) ls – li
+		b ) cat – vte
+		c ) diff – c
+		d ) cmp
+
+12.Additional Shell Features
+	a1.import shell variables
+			$$ 			Process ID ( PID )
+			$0 			Shell script name
+			$# 			Number of arguments passed to the shell script
+			$* 			All command line arguments passed to the script
+			$? 			Exit value of the last command
+			$! 			Process ID of last background process
+	a2.positional parameters
+			
+	a3.expr utility
+			o Use the expr utility to perform integer arithmetic							Precedence :
+																											high
+																											low
+			o expr offers the following operators :
+				\ * multiplication
+				/ integer division
+				% remainder
+				+ addition
+				- subtraction ( also unary minus sign)
+	a4.conditional execution
+			command1 && command2
+			command1 || command2
+	a5.test command
+	a6.if
+	a7.read
+	a8.for loop
+	a9.
+o Exercise 12 - Additional Shell Features
